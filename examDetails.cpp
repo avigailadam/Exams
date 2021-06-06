@@ -45,12 +45,7 @@ void ExamDetails::setLink(const std::string &zoomLink) {
 }
 
 std::string minutes(double time) {
-    int minute = (int) time * 10;
-    if (minute % 10 == 0) {
-        return "00";
-    } else {
-        return "30";
-    }
+    return ((int) (time * 10)) % 10 ? "30" : "00";
 }
 
 ExamDetails ExamDetails::makeMatamExam() {
@@ -60,7 +55,7 @@ ExamDetails ExamDetails::makeMatamExam() {
 ExamDetails &ExamDetails::operator=(const ExamDetails &exam_2) = default;
 
 std::ostream &operator<<(std::ostream &os, const ExamDetails &exam) {
-    os << std::endl << std::endl << "Course Number: " << exam.course_id << std::endl << "Time: " << exam.day_of_exam
+    os << std::endl << "Course Number: " << exam.course_id << std::endl << "Time: " << exam.day_of_exam
        << "."
        << exam.month_of_exam << " at " << (int) exam.start_time << ":" << minutes(exam.start_time) << std::endl
        << "Duration: " << exam.duration << ":00" << std::endl << "Zoom Link: " << exam.zoom_link;
