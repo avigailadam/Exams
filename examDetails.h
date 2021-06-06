@@ -6,10 +6,10 @@
 #define HW2_EXAMDETAILS_H
 
 
-class Exam {
-    int course_num;
+class  ExamDetails {
+    int course_id;
     int month_of_exam;
-    int dat_of_exam;
+    int date_of_exam;
     double start_time;
     int duration;
     std::string zoom_link;
