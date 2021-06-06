@@ -1,13 +1,39 @@
 #include <iostream>
 #include "examDetails.h"
 
-ExamDetails::ExamDetails(int courseId, int monthOfExam, int dateOfExam, double startTime, int duration,
-                         std::string link) : course_id(courseId), month_of_exam(monthOfExam),
-                                             day_of_exam(dateOfExam), start_time(startTime),
-                                             duration(duration), zoom_link(link) {}
+ExamDetails::ExamDetails(int courseId, int monthOfExam, int dayOfExam, double startTime, int duration,
+                         std::string zoomLink) : course_id(courseId), month_of_exam(monthOfExam),
+                                                 day_of_exam(dayOfExam), start_time(startTime),
+                                                 duration(duration), zoom_link(zoomLink) {
+    if (courseId < 0) {
+        throw InvalidArgsException();
+    }
+    if (monthOfExam <= 0 || monthOfExam > 30 || dayOfExam <= 0 || dayOfExam > 30) {
+        throw InvalidDateException();
+    }
+    if (!(((int) (startTime * 10) % 10) == 0 || ((int) (startTime * 10) % 10) == 5)) {
+        throw InvalidTimeException();
+    }
+    if (duration < 0) {
+        throw InvalidTimeException();
+    }
+}
 
-int ExamDetails::operator-(const ExamDetails exam_2) const {
-    return 0;
+
+bool ExamDetails::operator<(const ExamDetails &exam) const {
+    if (month_of_exam < exam.month_of_exam) {
+        return true;
+    }
+    if (month_of_exam > exam.month_of_exam) {
+        return false;
+    }
+    if (day_of_exam < exam.day_of_exam) {
+        return true;
+    }
+    if (day_of_exam > exam.day_of_exam) {
+        return false;
+    }
+    return start_time < exam.start_time;
 }
 
 const std::string &ExamDetails::getLink() const {
@@ -18,11 +44,19 @@ void ExamDetails::setLink(const std::string &zoomLink) {
     zoom_link = zoomLink;
 }
 
-int hours(ExamDetails exam) {
+ExamDetails ExamDetails::makeMatamExam() {
+    return ExamDetails(234124, 7, 28, 13, 3,
+                       "http://tinyurl.com/59hzps6m");
+}
+
+ExamDetails &ExamDetails::operator=(const ExamDetails &exam_2) = default;
+
+
+int hours(ExamDetails &exam) {
     return (int) exam.start_time;
 }
 
-int minutes(ExamDetails exam) {
+int minutes(ExamDetails &exam) {
     int minutes = (int) exam.start_time * 100;
     minutes = minutes % 100;
     return minutes;
