@@ -1,6 +1,3 @@
-//
-// Created by hagai on 6/5/2021.
-//
 
 #ifndef HW2_EXAMDETAILS_H
 #define HW2_EXAMDETAILS_H
@@ -29,7 +26,7 @@ public:
     void setLink(const std::string &zoomLink);
 
 
-    int operator-(ExamDetails other) const;
+    int operator-(const ExamDetails& other) const;
 
     bool operator<(const ExamDetails &exam) const;
     ExamDetails& operator=(const ExamDetails &exam_2);
@@ -45,5 +42,6 @@ public:
     class InvalidTimeException{};
     class InvalidArgsException{};
 };
+
 
 #endif //HW2_EXAMDETAILS_H

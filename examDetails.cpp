@@ -44,17 +44,21 @@ void ExamDetails::setLink(const std::string &zoomLink) {
     zoom_link = zoomLink;
 }
 
+std::string minutes(double time) {
+    int minute = (int) time * 100;
+    minute = minute % 100;
+    if (minute == 0) {
+        return "00";
+    } else {
+        return "30";
+    }
+}
+
 ExamDetails ExamDetails::makeMatamExam() {
-    return ExamDetails(234124, 7, 28, 13, 3,
-                       "http://tinyurl.com/59hzps6m");
+    return ExamDetails(234124, 7, 28, 13, 3, "http://tinyurl.com/59hzps6m");
 }
 
 ExamDetails &ExamDetails::operator=(const ExamDetails &exam_2) = default;
-
-
-int hours(ExamDetails &exam) {
-    return (int) exam.start_time;
-}
 
 int minutes(ExamDetails &exam) {
     int minutes = (int) exam.start_time * 100;
@@ -63,13 +67,13 @@ int minutes(ExamDetails &exam) {
 }
 
 std::ostream &operator<<(std::ostream &os, const ExamDetails &exam) {
-    os << "Course Number: " << exam.course_id << std::endl << "Time: " << exam.day_of_exam << "." << exam.month_of_exam
-       << "at " << hours(exam) << ":" << minutes(exam) << std::endl << "Duration: " << exam.duration << ":00"
-       << std::endl << "Zoom Link: " << exam.zoom_link;
+    os << "Course Number: " << exam.course_id << std::endl << "Time: " << exam.day_of_exam << "."
+       << exam.month_of_exam << "at " << (int) exam.start_time << ":" << minutes(exam.start_time) << std::endl
+       << "Duration: " << exam.duration << ":00" << std::endl << "Zoom Link: " << exam.zoom_link;
     return os;
 }
 
-int ExamDetails::operator-(const ExamDetails other) const {
+int ExamDetails::operator-(const ExamDetails &other) const {
     int months_gap = this->month_of_exam - other.month_of_exam;
     int days_gap = this->day_of_exam - other.day_of_exam;
     return months_gap + days_gap;
