@@ -1,39 +1,40 @@
-//
-// Created by hagai on 6/5/2021.
-//
 
 #ifndef HW2_EXAMDETAILS_H
 #define HW2_EXAMDETAILS_H
+#include <string>
+#include <ostream>
 
-
-class  ExamDetails {
+class ExamDetails {
     int course_id;
     int month_of_exam;
-    int date_of_exam;
+    int day_of_exam;
     double start_time;
     int duration;
     std::string zoom_link;
 
 public:
-    ExamDetails(int course_num, int month_of_exam, int dat_of_exam, double start_time, int duration, std::string
-    zoom_link = "");
+    ExamDetails(int courseId, int monthOfExam, int dayOfExam, double startTime, int duration,
+                std::string link = "");
 
     ~ExamDetails();
 
-    std::string getLink();
+    const std::string &getLink() const;
 
-    std::string setLink();
+    void setLink(const std::string &zoomLink);
 
-    int operator-(const ExamDetails exam_2) const;
 
-    bool operator<(ExamDetails exam_1, ExamDetails exam_2) const;
+    int operator-(const ExamDetails other) const;
 
-    static ExamDetails& makeMatamExam();
+    bool operator<(ExamDetails exam) const;
+
+    static ExamDetails &makeMatamExam();
+    std::ostream& operator<<(std::ostream& os, const ExamDetails exam);
+
+    friend std::ostream &operator<<(std::ostream &os, const ExamDetails &details);
+    friend  int hours(ExamDetails exam);
+    friend  int minutes(ExamDetails exam);
 
 
 };
-static ExamDetails& makeMatamExam(){
-    ExamDetails* matam= ExamDetails(234124,7,28,13.00,3,"https://tinyurl.com/59hzps6m");
-    return matam;
-}
+
 #endif //HW2_EXAMDETAILS_H
