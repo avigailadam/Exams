@@ -41,21 +41,40 @@ class SortedList::Node {
     T data;
     struct Node *next;
 public:
-    Node(T data, Node *next = nullptr);
-
-    Node(const T other);
+    Node(T data= nullptr){
+        Node* new_node =new Node;
+        new_node->data=data;
+        new_node->next= nullptr;
+    }
 
     ~Node();
 
-    Node &operator=(const T &other);
+    Node &operator=(const Node& other){
+        if(this==other){
+            return *this
+        }
+        data=other.data;
+        next=other.next;
+    }
 
-    T &NodeGetData(const Node &node);
+    T getData() const {
+        return data;
+    }
 
-    Node &NodeGetNext(const Node &node);
+    Node *getNext() const {
+        return next;
+    }
 
-    void NodeSetNext(const Node &node);
+    Node*& NodesetNext(const Node *new_next) {
+        this->next = new_next;
+    }
 
-    bool operator<(const Node node);
+    bool operator<(const Node& other){
+        if(this->data()<other.data()) {
+            return true;
+        }
+        return false;
+    }
 
     class const_iterator {
     private:
