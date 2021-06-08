@@ -8,13 +8,14 @@ typedef int T;
 class SortedList {
     //Node *head;
     int size;
+
     class Node;
 
 public:
 
     class const_iterator;
 
-    SortedList(Node *head = nullptr, int size = 0) :  size(size) {}
+    SortedList(Node *head = nullptr, int size = 0) : size(size) {}
 
     ~SortedList();
 
@@ -73,26 +74,34 @@ public:
 
         const_iterator &operator++() //++iterator
         {
-            if (current_node){
-                current_node=current_node->next;
+            if (current_node) {
+                current_node = current_node->next;//todo:and what if not?
             }
+            return *this;
         }
 
-        const_iterator &operator++(int) //iterator++
-        {const_iterator iterator = *this;
+        const_iterator operator++(int) //iterator++
+        {
+            const_iterator iterator = *this;
             ++(*this);
-            return iterator;}
+            return iterator;
+        }
 
         const_iterator(const const_iterator &other) = default;
 
         ~const_iterator() = default;
 
-        bool operator==(const const_iterator &other) const;
+        bool operator!=(const const_iterator &other) const {
+            return current_node != other.current_node;
+        }
 
-        bool operator!=(const const_iterator &other) const;
+        bool operator==(const const_iterator &other) const {
+            return !(*this != other);
+        }
 
-        const Node &operator*() const;
-
+        T operator*() const{
+            return current_node->data;
+        }
     };
 };
 
