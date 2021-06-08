@@ -11,7 +11,8 @@ ExamDetails::ExamDetails(int courseId, int monthOfExam, int dayOfExam, double st
     if (monthOfExam <= 0 || monthOfExam > 30 || dayOfExam <= 0 || dayOfExam > 30) {
         throw InvalidDateException();
     }
-    if (!(((int) (startTime * 10) % 10) == 0 || ((int) (startTime * 10) % 10) == 5)) {
+    if (!(((int) (startTime * 10) % 10) == 0 || ((int) (startTime * 10) % 10) == 5) && startTime >= 0 &&
+        startTime <= 23.5) {
         throw InvalidTimeException();
     }
     if (duration < 0) {

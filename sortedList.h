@@ -5,12 +5,42 @@
 
 typedef int T;
 
-template<class T>
-class Node {
+class SortedList {
+    //Node *head;
+    int size;
+    class Node;
+
+public:
+
+    class const_iterator;
+
+    SortedList(Node *head = nullptr, int size = 0) :  size(size) {}
+
+    ~SortedList();
+
+    SortedList(const SortedList &other);
+
+    SortedList &operator=(const SortedList &other);
+
+    void insert(Node node);
+
+    void remove(const_iterator iterator);
+
+    static int length();
+
+    //todo: filter
+    //todo: apply
+    const_iterator begin();
+
+    const_iterator end();
+};
+
+
+class SortedList::Node {
     T data;
     struct Node *next;
 public:
-    Node(T data = nullptr);
+    Node(T data, Node *next = nullptr);
 
     Node(const T other);
 
@@ -26,66 +56,56 @@ public:
 
     bool operator<(const Node node);
 
+    class const_iterator {
+    private:
+        Node *current_node;
+
+        explicit const_iterator(Node *node) :
+                current_node(node) {}
+
+        friend class SortedList;
+
+    public:
+        const_iterator &operator=(Node *node) {
+            current_node = node;
+            return *this;
+        }
+
+        const_iterator &operator++() //++iterator
+        {
+            if (current_node){
+                current_node=current_node->next;
+            }
+        }
+
+        const_iterator &operator++(int) //iterator++
+        {const_iterator iterator = *this;
+            ++(*this);
+            return iterator;}
+
+        const_iterator(const const_iterator &other) = default;
+
+        ~const_iterator() = default;
+
+        bool operator==(const const_iterator &other) const;
+
+        bool operator!=(const const_iterator &other) const;
+
+        const Node &operator*() const;
+
+    };
 };
 
 
-class SortedList {
-    Node *head;
-    int size;
-public:
-
-
-    SortedList(Node *head= nullptr, int size=0) : head(head), size(size) {}
-
-    ~SortedList();
-
-    SortedList(const SortedList &other);
-
-    SortedList &operator=(const SortedList &other);
-
-    void insert(Node node);
-
-    void remove(const_iterator iterator);
-
-    int length();
-
-    //todo: filter
-    //todo: apply
-    const_iterator begin();
-
-    const_iterator end();
-};
-
-SortedList:: class const_iterator {
-private:
-    Node *itr;
-
-    const_iterator();
-
-public:
-    const_iterator(const const_iterator &other);
-
-    ~const_iterator();
-
-    const_iterator &operator=(const const_iterator &other);
-
-    const_iterator &operator++();
-
-    bool operator==(const const_iterator &other);
-
-    Node &operator*(const const_iterator &other) const;
-
-};
-
-SortedList::~SortedList() {
-    while (head != nullptr) {
-        Node next = NodeGetNext(head);
-        ~Node(head);
-        size--;
-        head = next;
-    }
-    delete[] SortedList;
-}
+//SortedList::~SortedList() {
+//    while (head != nullptr) {
+//        Node next = NodeGetNext(head);
+//        ~Node(head);
+//        size--;
+//        head = next;
+//    }
+//    delete[] SortedList;
+//}
 
 //SortedList::SortedList(const SortedList &other) {
 //    size(other.size);
