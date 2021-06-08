@@ -47,7 +47,9 @@ public:
         new_node->next= nullptr;
     }
 
-    ~Node();
+    ~Node(){ //todo i am not sure at all
+        delete data;
+        delete this;
 
     Node &operator=(const Node& other){
         if(this==other){
