@@ -1,6 +1,7 @@
 
 #ifndef HW2_EXAMDETAILS_H
 #define HW2_EXAMDETAILS_H
+
 #include <string>
 #include <ostream>
 
@@ -16,7 +17,7 @@ public:
     ExamDetails(int course_num, int month_of_exam, int day_of_exam, double start_time, int duration, std::string
     zoom_link = "");
 
-    ExamDetails(const ExamDetails& exam) = default;
+    ExamDetails(const ExamDetails &exam) = default;
 
     ~ExamDetails() = default;
 
@@ -26,21 +27,29 @@ public:
     void setLink(const std::string &zoomLink);
 
 
-    int operator-(const ExamDetails& other) const;
+    int operator-(const ExamDetails &other) const;
 
     bool operator<(const ExamDetails &exam) const;
-    ExamDetails& operator=(const ExamDetails &exam_2);
+
+    ExamDetails &operator=(const ExamDetails &exam_2);
 
     friend std::ostream &operator<<(std::ostream &os, const ExamDetails &details);
-    friend  int hours(ExamDetails &exam);
-    friend  int minutes(ExamDetails &exam);
+
+    friend int hours(ExamDetails &exam);
+
+    friend int minutes(ExamDetails &exam);
 
 
     static ExamDetails makeMatamExam();
 
-    class InvalidDateException{};
-    class InvalidTimeException{};
-    class InvalidArgsException{};
+    class InvalidDateException {
+    };
+
+    class InvalidTimeException {
+    };
+
+    class InvalidArgsException {
+    };
 };
 
 
