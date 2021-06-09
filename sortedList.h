@@ -34,49 +34,6 @@ public:
     const_iterator begin();
 
     const_iterator end();
-};
-
-
-class SortedList::Node {
-    T data;
-    struct Node *next;
-public:
-    Node(T data= nullptr){
-        Node* new_node =new Node;
-        new_node->data=data;
-        new_node->next= nullptr;
-    }
-
-    ~Node(){ //todo i am not sure at all
-        delete data;
-        delete this;
-
-    Node &operator=(const Node& other){
-        if(this==other){
-            return *this
-        }
-        data=other.data;
-        next=other.next;
-    }
-
-    T getData() const {
-        return data;
-    }
-
-    Node *getNext() const {
-        return next;
-    }
-
-    Node*& NodesetNext(const Node *new_next) {
-        this->next = new_next;
-    }
-
-    bool operator<(const Node& other){
-        if(this->data()<other.data()) {
-            return true;
-        }
-        return false;
-    }
 
     class const_iterator {
     private:
@@ -120,12 +77,42 @@ public:
             return !(*this != other);
         }
 
-        T operator*() const{
+        T operator*() const {
             return current_node->data;
         }
     };
-};
 
+private:
+    class Node {
+        T data;
+        struct Node *next;
+
+        friend class SortedList;
+    };
+        Node* createNode(T data) {
+            Node *new_node = new Node;
+            new_node->data = data;
+            new_node->next = nullptr;
+            return new_node;
+        }
+
+//            T getData() const {
+//                return data;
+//            }
+//
+//            Node *&NodesetNext(const Node *new_next) {
+//                this->next = new_next;
+//            }
+//
+//            bool operator<(const Node &other) {
+//                if (this->data() < other.data()) {
+//                    return true;
+//                }
+//                return false;
+//            }
+//
+//        };
+};
 
 //SortedList::~SortedList() {
 //    while (head != nullptr) {
