@@ -3,212 +3,251 @@
 
 #include <iostream>
 
-typedef int T;
+namespace mtm {
+    template<class T>
+    class SortedList {
+        class Node;
 
-class SortedList {
-    class Node;
-
-    Node *head;
-    int size;
+        Node *head;
+        int size;
 
 
-public:
+    public:
 
-    class const_iterator;
+        class const_iterator;
 
-    SortedList() : size(0), head(nullptr) {}
+        SortedList() : size(0), head(nullptr) {}
 
-    ~SortedList();
+        ~SortedList();
 
-    SortedList(const SortedList &other);
+        SortedList(const SortedList<T> &other);
 
-    SortedList &operator=(const SortedList &other);
+        SortedList<T> &operator=(const SortedList<T> &other);
 
-    void insert(Node node);
+        void insert(T new_element);
 
-    void remove(const_iterator iterator);
+        void remove(const_iterator iterator);
 
-    int length() const {
-        return size;
-    }
+        int length() const {
+            return size;
+        }
 
-    //todo: filter
-    //todo: apply
-    const_iterator begin() {
-        const_iterator first(head);
-        return first;
-    }
+        template<class Condition>
+        SortedList<T> filter(Condition c);
 
-    const_iterator end() {
+        template<class Function>
+        SortedList<T> apply(Function f);
 
-        const_iterator item = begin();
-        if (item.current_node == nullptr) {
+        const_iterator begin() {
+            const_iterator first(head);
+            return first;
+        }
+
+        const_iterator end() {
+
+            const_iterator item = begin();
+            if (item.current_node == nullptr) {
+                return item;
+            }
+            while (item.current_node->next != nullptr) {
+                item++;
+            }
             return item;
         }
-        while (item.current_node->next != nullptr) {
-            item++;
-        }
-        return item;
-    }
 
-    class const_iterator {
-    private:
-        Node *current_node;
+        class const_iterator {
+        private:
+            Node *current_node;
 
-        explicit const_iterator(Node *node) :
-                current_node(node) {}
+            explicit const_iterator(Node *node) :
+                    current_node(node) {}
 
-        friend class SortedList;
+            friend class SortedList;
 
-    public:
-        const_iterator &operator=(Node *node) {
-            current_node = node;
-            return *this;
-        }
-
-        const_iterator &operator++() //++iterator
-        {
-            if (current_node) {
-                current_node = current_node->next;//todo:and what if not?
-            }
-            return *this;
-        }
-
-        const_iterator operator++(int) //iterator++
-        {
-            if (current_node == nullptr) {
-                throw std::out_of_range("end of list");
-            }
-            const_iterator iterator = *this;
-            ++(*this);
-
-            return iterator;
-        }
-
-        const_iterator(const const_iterator &other) = default;
-
-        ~const_iterator() = default;
-
-        bool operator!=(const const_iterator &other) const {
-            return current_node != other.current_node;
-        }
-
-        bool operator==(const const_iterator &other) const {
-            return !(*this != other);
-        }
-
-        T operator*() const {
-            return current_node->data;
-        }
-    };
-
-private:
-    class Node {
-        T data;
-        struct Node *next;
-
-        friend class SortedList;
-
-    public:
-        Node(T element, Node *node_next = nullptr) : data(element) {
-            next = node_next;
-        };
-
-        Node(Node &other) = default;
-
-        ~Node() {//todo no way its fine.
-            delete next;
-            ~data;
-        }
-
-        Node &operator=(const Node &other) {
-            if (this == &other) {
+        public:
+            const_iterator &operator=(Node *node) {
+                current_node = node;
                 return *this;
             }
-            data = other.data;
-            next = other.next;
-        }
-    };
-};
 
-SortedList::~SortedList() {
-    // there is at least one item
-    if (head != nullptr) {
-        // release memory starting from the second item
-        Node *soon = nullptr;
-        Node *current = this->head->next;
-        while (current != nullptr)  // if there are at least two items
-        {
-            if (current->next != nullptr) {
-                soon = current->next;
-                delete current;
-                current = soon;
-            } else {
-                delete current;
-                break;
+            const_iterator &operator++() //++iterator
+            {
+                if (current_node) {
+                    current_node = current_node->next;
+                }
+                return *this;
             }
+
+            const_iterator operator++(int) //iterator++
+            {
+                if (current_node == nullptr) {
+                    throw std::out_of_range("End of list");
+                }
+                const_iterator iterator = *this;
+                ++(*this);
+
+                return iterator;
+            }
+
+            const_iterator(const const_iterator &other) = default;
+
+            ~const_iterator() = default;
+
+            bool operator!=(const const_iterator &other) const {
+                return current_node != other.current_node;
+            }
+
+            bool operator==(const const_iterator &other) const {
+                return !(*this != other);
+            }
+
+            T operator*() const {
+                return current_node->data;
+            }
+        };
+
+    private:
+        class Node {
+            T data;
+            struct Node *next;
+
+            friend class SortedList;
+
+        public:
+            explicit Node(T element, Node *node_next = nullptr) : data(element) {
+                next = node_next;
+            };
+
+            Node(Node &other) = default;
+
+            ~Node() = default;
+        };
+    };
+
+    template<class T>
+    SortedList<T>::~SortedList() {
+        if (head == nullptr) {
+            return;
+        }
+        Node *current = head;
+        while (current != nullptr) {
+            Node *temp = current->next;
+            delete current;
+            current = temp;
         }
     }
-    delete this->head;
-}
 
-void SortedList::remove(const_iterator iterator) {
-    if (iterator == begin()) {
-        Node *temp = head->next;
-        delete head;
-        head = temp;
-        size--;
-        return;
-    }
-    Node *current = this->head;
-    Node *after = nullptr;
-    Node *before = this->head;
-    for (SortedList::const_iterator i = ++begin(); i != end(); ++i) {
-        if (i != iterator) {
-            continue;
+    template<class T>
+    void SortedList<T>::remove(const_iterator iterator) {
+        if (iterator == begin()) {
+            Node *temp = head->next;
+            delete head;
+            head = temp;
+            size--;
+            return;
         }
-        before = current;
-        current = current->next;
-        before->next = current->next;
-        delete current;
-        size--;
-        return;
+        Node *current = this->head;
+        Node *before = this->head;
+        for (SortedList::const_iterator i = ++begin(); i != end(); ++i) {
+            if (i != iterator) {
+                continue;
+            }
+            before = current;
+            current = current->next;
+            before->next = current->next;
+            delete current;
+            size--;
+            return;
+        }
     }
-}
 
-SortedList::SortedList(const SortedList &other) : size(other.size) {
-    if (other.head == nullptr) {
-        head = nullptr;
-        return;
+    template<class T>
+    SortedList<T>::SortedList(const SortedList &other) : size(other.size) {
+        if (other.head == nullptr) {
+            head = nullptr;
+            return;
+        }
+        head = new Node(*other.head);
+        Node *current = head;
+        Node *current_other = other.head;
+        while (current_other->next != nullptr) {
+            current->next = new Node(*current_other->next);
+            current_other = current_other->next;
+            current = current->next;
+        }
     }
-    head = new Node(*other.head);
-    Node *current = head;
-    Node *current_other = other.head;
-    while (current_other->next != nullptr) {
-        current->next = new Node(*current_other->next);
-        current_other = current_other->next;
-        current = current->next;
-    }
-}
 
-SortedList &SortedList::operator=(const SortedList &other) {
-    if (&other != this) {
+    template<class T>
+    SortedList<T> &SortedList<T>::operator=(const SortedList<T> &other) {
+        if (this == &other) {
+            return *this;
+        }
+        for (SortedList::const_iterator i = begin(); i != end(); ++i) {
+            delete i.current_node;
+        }
+        delete end().current_node;
+        size = other.size;
+        head = new Node(*other.head);
+        Node *current = head;
+        Node *current_other = other.head;
+        while (current_other->next != nullptr) {
+            current->next = new Node(*current_other->next);
+            current_other = current_other->next;
+            current = current->next;
+        }
         return *this;
     }
-    for (SortedList::const_iterator i = begin(); i != end(); ++i) {
-        delete i.current_node;
-    }
-    delete end().current_node;
-    size = other.size;
-    head = new Node(*other.head);
-    Node *current = head;
-    Node *current_other = other.head;
-    while (current_other->next != nullptr) {
-        current->next = new Node(*current_other->next);
-        current_other = current_other->next;
-        current = current->next;
-    }
-    return *this;
-}
 
+    template<class T>
+    void SortedList<T>::insert(T new_element) {
+        const_iterator tmp = begin();
+        Node *new_node = new Node(new_element);
+        if (head == nullptr) {
+            head = new_node;
+            size++;
+            return;
+        }
+        for (const_iterator i = begin(); i != end(); tmp = i, ++i) {
+            if (i.current_node->data < new_element) {
+                continue;
+            }
+            new_node->next = i.current_node;
+            if (i == begin()) {
+                head = new_node;
+                size++;
+                return;
+            }
+            tmp.current_node->next = new_node;
+            size++;
+            return;
+        }
+        end().current_node->next = new_node;
+        size++;
+    }
+
+    template<class T>
+    template<class Condition>
+    SortedList<T> SortedList<T>::filter(Condition c) {
+        SortedList filtered_list;
+        for (const_iterator i = begin(); i != end(); ++i) {
+            if (!c(i.current_node->data)) {
+                continue;
+            }
+            filtered_list.insert(i.current_node->data);
+        }
+        return filtered_list;
+    }
+
+    template<class T>
+    template<class Function>
+    SortedList<T> SortedList<T>::apply(Function f) {
+        SortedList<T> transformed_list;
+        for (const_iterator i = begin(); i != end(); ++i) {
+            transformed_list.insert(f(i.current_node->data));
+        }
+        return transformed_list;
+    }
+
+}
 #endif //EXAMS_SORTEDLIST_H
+

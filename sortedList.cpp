@@ -4,4 +4,11 @@
 #include <cassert>
 #include "sortedList.h"
 
+int main() {
+    {
+        SortedList list;
+        list.insert(1);
+        list.insert(2);
+    }
+}
 
