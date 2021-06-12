@@ -2,6 +2,7 @@
 #define EXAMS_SORTEDLIST_H
 
 #include <iostream>
+
 typedef int T;
 
 class SortedList {
@@ -11,12 +12,11 @@ class SortedList {
     int size;
 
 
-
 public:
 
     class const_iterator;
 
-    SortedList() : size(0),head(nullptr) {}
+    SortedList() : size(0), head(nullptr) {}
 
     ~SortedList();
 
@@ -28,18 +28,24 @@ public:
 
     void remove(const_iterator iterator);
 
-    static int length();
+    int length() const {
+        return size;
+    }
 
     //todo: filter
     //todo: apply
-    const_iterator begin(){
+    const_iterator begin() {
         const_iterator first(head);
         return first;
     }
 
-    const_iterator end(){
-        const_iterator item= begin();
-        for(int i=0;i<size;i++){
+    const_iterator end() {
+
+        const_iterator item = begin();
+        if (item.current_node == nullptr) {
+            return item;
+        }
+        while (item.current_node->next != nullptr) {
             item++;
         }
         return item;
@@ -103,12 +109,6 @@ private:
 
         friend class SortedList;
     };
-        Node* createNode(T data) {
-            Node *new_node = new Node;
-            new_node->data = data;
-            new_node->next = nullptr;
-            return new_node;
-        }
 
 //            T getData() const {
 //                return data;
@@ -127,49 +127,74 @@ private:
 //
 //        };
 };
-//todo dtor is not done!
-//SortedList::~SortedList() {
-//        // there is at least one item
-//        if(head != nullptr)
-//        {
-//            // release memory starting from the second item
-//            Node *current, *soon;
-//            current = this->head->next;
-//            while(current != nullptr)  // if there are at least two items
-//            {
-//                /* When there is no more items after current,
-//                 * delete current and leave.
-//                 * Otherwise, free up current and move on to
-//                 * the next item.
-//                 */
-//                if(current->next != nullptr)
-//                {
-//                    soon = current->next;
-//                    delete current;
-//                    current = soon;
-//                }
-//                else
-//                {
-//                    delete current;
-//                    break;
-//                }
-//
-//            }
-//        }
 
-//        delete this->head;
-//        delete this->();
-//    }
-//}
+SortedList::~SortedList() {
+    // there is at least one item
+    if (head != nullptr) {
+        // release memory starting from the second item
+        Node *soon = nullptr;
+        Node *current = this->head->next;
+        while (current != nullptr)  // if there are at least two items
+        {
+            if (current->next != nullptr) {
+                soon = current->next;
+                delete current;
+                current = soon;
+            } else {
+                delete current;
+                break;
+            }
+        }
+    }
+    delete this->head;
+}
 
+void SortedList::remove(const_iterator iterator) {
+    if (iterator == begin()) {
+        Node *temp = head->next;
+        delete head;
+        head = temp;
+        size--;
+        return;
+    }
+    Node *current = this->head;
+    Node *after = nullptr;
+    Node *before = this->head;
+    for (SortedList::const_iterator i = ++begin(); i != end(); ++i) {
+        if (i != iterator) {
+            continue;
+        }
+        before = current;
+        current = current->next;
+        before->next = current->next;
+        delete current;
+        size--;
+        return;
+    }
+}
 
-//SortedList::SortedList(const SortedList &other) {
-//    size(other.size);
-//    for (typename SortedList::const_iterator it = begin();it != end(); ++it) {
-//        Node node= new Node(Node::NodeGetData(other);
-//        head=node;
-//
-//    }
-//    }
+SortedList::SortedList(const SortedList &other) : size(other.size) {
+    if (other.head == nullptr) {
+        head = nullptr;
+        return;
+    }
+    head = new Node(*other.head);
+    Node *current = head;
+    Node *current_other = other.head;
+    while (current_other->next != nullptr) {
+        current->next = new Node(*current_other->next);
+        current_other = current_other->next;
+        current = current->next;
+    }
+}
+
+SortedList &SortedList::operator=(const SortedList &other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    size = other.size;
+
+}
 
 #endif //EXAMS_SORTEDLIST_H
