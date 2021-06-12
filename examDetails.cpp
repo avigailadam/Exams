@@ -56,10 +56,10 @@ ExamDetails ExamDetails::makeMatamExam() {
 ExamDetails &ExamDetails::operator=(const ExamDetails &exam_2) = default;
 
 std::ostream &operator<<(std::ostream &os, const ExamDetails &exam) {
-    os << std::endl << "Course Number: " << exam.course_id << std::endl << "Time: " << exam.day_of_exam
+    os << "Course Number: " << exam.course_id << std::endl << "Time: " << exam.day_of_exam
        << "."
        << exam.month_of_exam << " at " << (int) exam.start_time << ":" << minutes(exam.start_time) << std::endl
-       << "Duration: " << exam.duration << ":00" << std::endl << "Zoom Link: " << exam.zoom_link;
+       << "Duration: " << exam.duration << ":00" << std::endl << "Zoom Link: " << exam.zoom_link << std::endl;
     return os;
 }
 
