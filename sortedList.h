@@ -2,6 +2,7 @@
 #define EXAMS_SORTEDLIST_H
 
 #include <iostream>
+#include <cassert>
 
 namespace mtm {
     template<class T>
@@ -44,15 +45,8 @@ namespace mtm {
         }
 
         const_iterator end() {
-
-            const_iterator item = begin();
-            if (item.current_node == nullptr) {
-                return item;
-            }
-            while (item.current_node->next != nullptr) {
-                item++;
-            }
-            return item;
+            const_iterator result(nullptr);
+            return result;
         }
 
         class const_iterator {
@@ -112,6 +106,8 @@ namespace mtm {
             struct Node *next;
 
             friend class SortedList;
+
+            Node() = default;
 
         public:
             explicit Node(T element, Node *node_next = nullptr) : data(element) {
@@ -200,29 +196,30 @@ namespace mtm {
 
     template<class T>
     void SortedList<T>::insert(T new_element) {
-        const_iterator tmp = begin();
         Node *new_node = new Node(new_element);
-        if (head == nullptr) {
+        if (head == nullptr ) {
             head = new_node;
             size++;
             return;
         }
-        for (const_iterator i = begin(); i != end(); tmp = i, ++i) {
+        //assert(begin()!= nullptr);
+        Node* before = begin().current_node;
+        for (const_iterator i = begin(); i != end(); ++i) {
             if (i.current_node->data < new_element) {
+                before = i.current_node;
                 continue;
             }
-            new_node->next = i.current_node;
-            if (i == begin()) {
-                head = new_node;
-                size++;
-                return;
+
+            Node *current = i.current_node;
+            new_node->next = current;
+            if (current==head){
+                head=new_node;
+            } else{
+                before->next=new_node;
             }
-            tmp.current_node->next = new_node;
             size++;
             return;
         }
-        end().current_node->next = new_node;
-        size++;
     }
 
     template<class T>
