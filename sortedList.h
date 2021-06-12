@@ -76,9 +76,9 @@ public:
 
         const_iterator operator++(int) //iterator++
         {
-//            if(current_node== nullptr){
-//                throw std::out_of_range();
-//            }
+            if (current_node == nullptr) {
+                throw std::out_of_range("end of list");
+            }
             const_iterator iterator = *this;
             ++(*this);
 
@@ -108,24 +108,27 @@ private:
         struct Node *next;
 
         friend class SortedList;
-    };
 
-//            T getData() const {
-//                return data;
-//            }
-//
-//            Node *&NodesetNext(const Node *new_next) {
-//                this->next = new_next;
-//            }
-//
-//            bool operator<(const Node &other) {
-//                if (this->data() < other.data()) {
-//                    return true;
-//                }
-//                return false;
-//            }
-//
-//        };
+    public:
+        Node(T element, Node *node_next = nullptr) : data(element) {
+            next = node_next;
+        };
+
+        Node(Node &other) = default;
+
+        ~Node() {//todo no way its fine.
+            delete next;
+            ~data;
+        }
+
+        Node &operator=(const Node &other) {
+            if (this == &other) {
+                return *this;
+            }
+            data = other.data;
+            next = other.next;
+        }
+    };
 };
 
 SortedList::~SortedList() {
@@ -189,12 +192,23 @@ SortedList::SortedList(const SortedList &other) : size(other.size) {
 }
 
 SortedList &SortedList::operator=(const SortedList &other) {
-    if (this == &other) {
+    if (&other != this) {
         return *this;
     }
-
+    for (SortedList::const_iterator i = begin(); i != end(); ++i) {
+        delete i.current_node;
+    }
+    delete end().current_node;
     size = other.size;
-
+    head = new Node(*other.head);
+    Node *current = head;
+    Node *current_other = other.head;
+    while (current_other->next != nullptr) {
+        current->next = new Node(*current_other->next);
+        current_other = current_other->next;
+        current = current->next;
+    }
+    return *this;
 }
 
 #endif //EXAMS_SORTEDLIST_H
