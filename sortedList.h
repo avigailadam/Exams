@@ -143,12 +143,11 @@ namespace mtm {
             return;
         }
         Node *current = this->head;
-        Node *before = this->head;
         for (SortedList::const_iterator i = ++begin(); i != end(); ++i) {
             if (i != iterator) {
                 continue;
             }
-            before = current;
+            Node *before = current;
             current = current->next;
             before->next = current->next;
             delete current;
@@ -178,9 +177,15 @@ namespace mtm {
         if (this == &other) {
             return *this;
         }
-        for (SortedList::const_iterator i = begin(); i != end(); ++i) {
-            delete i.current_node;
+
+        Node *i = head;
+
+        while (i != nullptr) {
+            Node *temp = i->next;
+            delete i;
+            i = temp;
         }
+
         delete end().current_node;
         size = other.size;
         head = new Node(*other.head);
@@ -197,13 +202,13 @@ namespace mtm {
     template<class T>
     void SortedList<T>::insert(T new_element) {
         Node *new_node = new Node(new_element);
-        if (head == nullptr ) {
+        if (head == nullptr) {
             head = new_node;
             size++;
             return;
         }
         //assert(begin()!= nullptr);
-        Node* before = begin().current_node;
+        Node *before = begin().current_node;
         for (const_iterator i = begin(); i != end(); ++i) {
             if (i.current_node->data < new_element) {
                 before = i.current_node;
@@ -212,14 +217,16 @@ namespace mtm {
 
             Node *current = i.current_node;
             new_node->next = current;
-            if (current==head){
-                head=new_node;
-            } else{
-                before->next=new_node;
+            if (current == head) {
+                head = new_node;
+            } else {
+                before->next = new_node;
             }
             size++;
             return;
         }
+        before->next = new_node;
+        size++;
     }
 
     template<class T>

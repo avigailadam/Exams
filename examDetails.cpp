@@ -50,7 +50,7 @@ std::string minutes(double time) {
 }
 
 ExamDetails ExamDetails::makeMatamExam() {
-    return ExamDetails(234124, 7, 28, 13, 3, "http://tinyurl.com/59hzps6m");
+    return ExamDetails(234124, 7, 28, 13, 3, "https://tinyurl.com/59hzps6m");
 }
 
 ExamDetails &ExamDetails::operator=(const ExamDetails &exam_2) = default;

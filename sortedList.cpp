@@ -13,13 +13,10 @@ using namespace mtm;
 
 int main() {
     {
-        SortedList<int> list;
-        list.insert(9);
-        list.insert(2);
-        list.insert(1);
-        list.insert(5);
-        list.insert(3);
- //       cout<<*list.end()<<endl;
+        SortedList<string> list;
+        list.insert("C");
+        list.insert("B");
+        list.insert("A");
         for (auto it = list.begin(); !(it == list.end()); ++it) {
             cout << *it << endl;
         }
