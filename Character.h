@@ -11,13 +11,6 @@
 using namespace mtm;
 
 
-struct Stats {
-    int health;
-    int ammo;
-    const double range;
-    const int power;
-};
-
 class Character {
 private:
     int health;
@@ -25,12 +18,18 @@ private:
     const int reload_ammo;
     const int range;
     const int power;
+    const int moving_range;
+    const int ammo_per_attack;
 protected:
-    Character(int health, int ammo, const int range, const int power) :
-            health(health), current_ammo(ammo), reload_ammo(ammo), range(range), power(power) {}
+    Character(int health, int ammo, const int range, const int power, const int moving_range, const int ammo_per_attack)
+            :
+            health(health), current_ammo(ammo), reload_ammo(ammo), range(range), power(power),
+            moving_range(moving_range), ammo_per_attack(ammo_per_attack) {}
 
 public:
-    virtual void attack(const Game& game, const GridPoint& src, const GridPoint& dst) = 0;
+    virtual void attack(const Game &game, const GridPoint &src, const GridPoint &dst) = 0;
+
+    virtual bool canAttack(GridPoint points) = 0;
 
     void reload() {
         current_ammo += reload_ammo;
