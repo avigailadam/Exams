@@ -3,10 +3,11 @@
 //
 
 #include "Soldier.h"
-
-Soldier::Soldier(int health, int currentAmmo, int range, int power) :
-        Character(health, currentAmmo, Soldier::RELOAD_AMMO, range, power, Soldier::MOVING_RANGE,
-                  Soldier::AMMO_PER_ATTACK) {};
+namespace mtm {
+    Soldier::Soldier(Team team, int health, int currentAmmo, int range, int power) :
+            Character(team, health, currentAmmo, Soldier::RELOAD_AMMO, range, power, Soldier::MOVING_RANGE,
+                      Soldier::AMMO_PER_ATTACK) {};
+}
 
 
 

@@ -10,6 +10,5 @@ void Medic::attack(const Game &game, const GridPoint &src, const GridPoint &dst)
         return;
     }
 
-
 }
 

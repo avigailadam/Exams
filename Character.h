@@ -6,55 +6,69 @@
 #define GAME_CHARACTER_H
 #include "Exceptions.h"
 #include "Auxiliaries.h"
-#include "Game.h"
+#include <cmath>
+#include <vector>
 
-using namespace mtm;
 
+namespace mtm {
+    class Character {
+    private:
+        Team team;
+        int health;
+        int current_ammo;
+        const int reload_ammo;
+        const int range;
+        const int power;
+        const int moving_range;
+    public:
+    private:
 
-class Character {
-private:
-    int health;
-    int current_ammo;
-    const int reload_ammo;
-    const int range;
-    const int power;
-    const int moving_range;
-    const int ammo_per_attack;
-protected:
-    Character(int health, int currentAmmo, const int reloadAmmo, const int range, const int power,
-              const int movingRange, const int ammoPerAttack) : health(health), current_ammo(currentAmmo),
-                                                                reload_ammo(reloadAmmo), range(range), power(power),
-                                                                   moving_range(movingRange),
-                                                                ammo_per_attack(ammoPerAttack) {}
+        const int ammo_per_attack;
+    protected:
+        Character(Team team, int health, int currentAmmo, int reloadAmmo, int range, int power,
+                  int movingRange, int ammoPerAttack) : team(team), health(health), current_ammo(currentAmmo),
+                                                        reload_ammo(reloadAmmo), range(range), power(power),
+                                                        moving_range(movingRange),
+                                                        ammo_per_attack(ammoPerAttack) {}
 
-public:
-    virtual void attack(const Game &game, const GridPoint &src, const GridPoint &dst) = 0;
+        void reduceHealth(int amount) {
+            health -= amount;
+        }
 
-    virtual bool canAttack(GridPoint points) = 0;
+    public:
 
-    void reload() {
-        current_ammo += reload_ammo;
-    }
+        virtual std::vector<GridPoint> getAttackCoordinates(const GridPoint &dst_coordinate) = 0;
 
-    int getHealth() const {
-        return health;
-    }
+        virtual void attack(Character &victim, int i) = 0;
 
-    void reduceHealth(int amount) {
-        health -= amount;
-    }
+        void reload() {
+            current_ammo += reload_ammo;
+        }
 
-    int getCurrentAmmo() const {
-        return current_ammo;
-    }
+        Team getTeam() const {
+            return team;
+        }
 
-    int getRange() const {
-        return range;
-    }
+        int getHealth() const {
+            return health;
+        }
 
-    int getPower() const {
-        return power;
-    }
-};
+        int getCurrentAmmo() const {
+            return current_ammo;
+        }
+
+        int getRange() const {
+            return range;
+        }
+
+        int getPower() const {
+            return power;
+        }
+
+        int getMovingRange() const {
+            return moving_range;
+        }
+    };
+}
 
 #endif //GAME_CHARACTER_H

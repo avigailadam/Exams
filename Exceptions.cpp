@@ -1,5 +1,5 @@
-
 #include "Exceptions.h"
+
 
 const char *mtm::IllegalArgument::what() const noexcept {
     return ("A game related error has occurred: IllegalArgument");
