@@ -4,7 +4,7 @@
 
 #ifndef GAME_CHARACTER_H
 #define GAME_CHARACTER_H
-
+#include "Exceptions.h"
 #include "Auxiliaries.h"
 #include "Game.h"
 
@@ -21,10 +21,11 @@ private:
     const int moving_range;
     const int ammo_per_attack;
 protected:
-    Character(int health, int ammo, const int range, const int power, const int moving_range, const int ammo_per_attack)
-            :
-            health(health), current_ammo(ammo), reload_ammo(ammo), range(range), power(power),
-            moving_range(moving_range), ammo_per_attack(ammo_per_attack) {}
+    Character(int health, int currentAmmo, const int reloadAmmo, const int range, const int power,
+              const int movingRange, const int ammoPerAttack) : health(health), current_ammo(currentAmmo),
+                                                                reload_ammo(reloadAmmo), range(range), power(power),
+                                                                   moving_range(movingRange),
+                                                                ammo_per_attack(ammoPerAttack) {}
 
 public:
     virtual void attack(const Game &game, const GridPoint &src, const GridPoint &dst) = 0;

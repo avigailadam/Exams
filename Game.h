@@ -14,11 +14,15 @@ enum Team {
 enum CharacterType {
     SOLDIER, MEDIC, SNIPER
 };
+enum CompareTeamResult {
+    SAME, DIFFERENT, EMPTY
+};
 typedef int units_t;
 
 class Game {
 private:
-    Matrix <Character> m;
+    vector<vector<Character>>  board;
+public:
 
     Game(int height, int width);
 
@@ -28,7 +32,6 @@ private:
 
     Game &operator=(const Game &other);
 
-public:
     void move(const GridPoint &src, const GridPoint dst);
 
     void addCharacter(const GridPoint &coordinates, std::shared_ptr<Character> character);
