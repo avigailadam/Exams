@@ -4,6 +4,7 @@
 
 #ifndef GAME_CHARACTER_H
 #define GAME_CHARACTER_H
+
 #include "Exceptions.h"
 #include "Auxiliaries.h"
 #include <cmath>
@@ -37,7 +38,17 @@ namespace mtm {
 
         virtual void attack(Character &victim, int distance_from_attacked_point,bool reduce) = 0;
 
-        virtual std::vector<GridPoint> getAttackCoordinates(const GridPoint &dst_coordinate) = 0;
+        void reduceHealth(int amount) {
+            health -= amount;
+        }
+
+        void cureTeammate(int amount) {
+            health += amount;
+        }
+
+        void reduceAmmo() {
+            current_ammo -= ammo_per_attack;
+        }
 
         void reload() {
             current_ammo += reload_ammo;
@@ -70,6 +81,8 @@ namespace mtm {
         int getMovingRange() const {
             return moving_range;
         }
+
+        virtual std::string &addToString(std::string &str) = 0;
     };
 }
 
