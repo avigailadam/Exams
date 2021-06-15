@@ -3,6 +3,12 @@
 //
 #include "Exceptions.h"
 #include "Game.h"
+#include "memory"
+#include "Soldier.h"
+#include "Sniper.h"
+#include "Medic.h"
+#include "Auxiliaries.h"
+#include <ostream>
 
 namespace mtm {
 
@@ -12,7 +18,7 @@ namespace mtm {
         }
         board = std::vector<std::vector<std::shared_ptr<Character>>>(height);
         for (int i = 0; i < height; ++i) {
-            board[i] = std::vector<std::shared_ptr<Character>>(width);
+            board[i] = std::vector<std::shared_ptr<Character>>(width, nullptr);
         }
     }
 
