@@ -35,7 +35,7 @@ namespace mtm {
         virtual std::vector<GridPoint>
         getAttackCoordinates(const GridPoint &src_coordinate, const GridPoint &dst_coordinate) = 0;
 
-        virtual void attack(Character &victim, int distance_from_attacked_point) = 0;
+        virtual void attack(Character &victim, int distance_from_attacked_point,bool reduce) = 0;
 
         virtual std::vector<GridPoint> getAttackCoordinates(const GridPoint &dst_coordinate) = 0;
 

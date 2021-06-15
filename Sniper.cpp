@@ -23,7 +23,7 @@ namespace mtm {
         return std::vector<GridPoint>(1,dst_coordinate);
     }
 
-    void Sniper::attack(Character &victim, int distance_from_attacked_point) {
+    void Sniper::attack(Character &victim, int distance_from_attacked_point,bool reduce) {
         assert(distance_from_attacked_point == 0);
         if (victim.getTeam() == getTeam()) {
             throw IllegalTarget();

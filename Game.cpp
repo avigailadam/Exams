@@ -26,6 +26,7 @@ namespace mtm {
         std::shared_ptr<Character> attacker = getCharacterAt(src_coordinates);
         std::vector<GridPoint> targets = attacker->getAttackCoordinates(src_coordinates, dst_coordinates);
         bool isIllegal = true;
+        int counter = 0;
         for (int i = 0; i < targets.size(); i++) {
             if (isOutOfBounds(targets[i])) {
                 continue;
@@ -35,8 +36,8 @@ namespace mtm {
                 continue;
             }
             isIllegal = false;
-
-            attacker->attack(*victim, GridPoint::distance(dst_coordinates, targets[i]));
+            counter++;
+            attacker->attack(*victim, GridPoint::distance(dst_coordinates, targets[i]),counter==1);
             if ((victim->getHealth()) <= 0) {
                 board[targets[i].row][targets[i].col]= nullptr;
             }
@@ -123,7 +124,7 @@ namespace mtm {
     void Game::reload(const GridPoint &coordinates) {
         std::shared_ptr<Character> c = getCharacterAt(coordinates);
         if (c == nullptr) {
-            throw IllegalCell();
+            throw CellEmpty();
         }
         c->reload();
     }
