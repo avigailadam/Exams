@@ -16,33 +16,35 @@ namespace mtm {
         Team team;
         int health;
         int current_ammo;
-        const int reload_ammo;
-        const int range;
-        const int power;
-        const int moving_range;
-    public:
-    private:
+        int reload_ammo;
+        int range;
+        int power;
+        int moving_range;
+        int ammo_per_attack;
 
-        const int ammo_per_attack;
     protected:
+
         Character(Team team, int health, int currentAmmo, int reloadAmmo, int range, int power,
                   int movingRange, int ammoPerAttack) : team(team), health(health), current_ammo(currentAmmo),
                                                         reload_ammo(reloadAmmo), range(range), power(power),
                                                         moving_range(movingRange),
                                                         ammo_per_attack(ammoPerAttack) {}
 
-        void reduceHealth(int amount) {
-            health -= amount;
-        }
-
     public:
+
+        virtual std::vector<GridPoint>
+        getAttackCoordinates(const GridPoint &src_coordinate, const GridPoint &dst_coordinate) = 0;
+
+        virtual void attack(Character &victim, int distance_from_attacked_point,bool reduce) = 0;
 
         virtual std::vector<GridPoint> getAttackCoordinates(const GridPoint &dst_coordinate) = 0;
 
-        virtual void attack(Character &victim, int i) = 0;
-
         void reload() {
             current_ammo += reload_ammo;
+        }
+
+        int getAmmoPerAttack() const {
+            return ammo_per_attack;
         }
 
         Team getTeam() const {

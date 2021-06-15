@@ -7,12 +7,14 @@
 namespace mtm {
 
     Game::Game(int height, int width) : height(height), width(width) {
+        if (height <= 0 || width <= 0) {
+            throw IllegalArgument();
+        }
         board = std::vector<std::vector<std::shared_ptr<Character>>>(height);
         for (int i = 0; i < height; ++i) {
             board[i] = std::vector<std::shared_ptr<Character>>(width);
         }
     }
-
 
     void Game::attack(const GridPoint &src_coordinates, const GridPoint &dst_coordinates) {
         if (isOutOfBounds(src_coordinates), isOutOfBounds(src_coordinates)) {
@@ -22,15 +24,26 @@ namespace mtm {
             throw CellEmpty();
         }
         std::shared_ptr<Character> attacker = getCharacterAt(src_coordinates);
-        std::vector<GridPoint> targets = attacker->getAttackCoordinates(dst_coordinates);
+        std::vector<GridPoint> targets = attacker->getAttackCoordinates(src_coordinates, dst_coordinates);
+        bool isIllegal = true;
+        int counter=0;
         for (int i = 0; i < targets.size(); i++) {
             if (isOutOfBounds(targets[i])) {
                 continue;
             }
-            if (getCharacterAt(targets[i]) == nullptr) {
+            std::shared_ptr<Character> victim = getCharacterAt(targets[i]);
+            if (victim == nullptr) {
                 continue;
             }
-            attacker->attack(*getCharacterAt(targets[i]), GridPoint::distance(dst_coordinates, targets[i]));
+            isIllegal = false;
+            counter++;
+            attacker->attack(*victim, GridPoint::distance(dst_coordinates, targets[i]),counter==1);
+            if ((victim->getHealth()) <= 0) {
+                board[targets[i].row][targets[i].col]= nullptr;
+            }
+        }
+        if (isIllegal) {
+            throw IllegalTarget();
         }
     }
 
@@ -111,7 +124,7 @@ namespace mtm {
     void Game::reload(const GridPoint &coordinates) {
         std::shared_ptr<Character> c = getCharacterAt(coordinates);
         if (c == nullptr) {
-            throw IllegalCell();
+            throw CellEmpty();
         }
         c->reload();
     }
@@ -124,6 +137,6 @@ namespace mtm {
           }
 
         }
-            mtm::printGameBoard(os, );
+        return printGameBoard(os, str.c_str(), str.c_str() + str.size(), game.width);
     }
 }
