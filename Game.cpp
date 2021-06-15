@@ -26,7 +26,6 @@ namespace mtm {
         std::shared_ptr<Character> attacker = getCharacterAt(src_coordinates);
         std::vector<GridPoint> targets = attacker->getAttackCoordinates(src_coordinates, dst_coordinates);
         bool isIllegal = true;
-        int counter=0;
         for (int i = 0; i < targets.size(); i++) {
             if (isOutOfBounds(targets[i])) {
                 continue;
@@ -36,8 +35,8 @@ namespace mtm {
                 continue;
             }
             isIllegal = false;
-            counter++;
-            attacker->attack(*victim, GridPoint::distance(dst_coordinates, targets[i]),counter==1);
+
+            attacker->attack(*victim, GridPoint::distance(dst_coordinates, targets[i]));
             if ((victim->getHealth()) <= 0) {
                 board[targets[i].row][targets[i].col]= nullptr;
             }
@@ -124,18 +123,21 @@ namespace mtm {
     void Game::reload(const GridPoint &coordinates) {
         std::shared_ptr<Character> c = getCharacterAt(coordinates);
         if (c == nullptr) {
-            throw CellEmpty();
+            throw IllegalCell();
         }
         c->reload();
     }
 
-    std::ostream &operator<<(std::ostream &os, const Game &game) {
-        std::String seq ="";
-        for (int row = 0; row < game.width ; ++row) {
-          for(int col=0; col<game.height; col++){
-              board[row][col]
-          }
-
+    std::ostream& operator<<(std::ostream &os, Game& game) {
+        std::string str("");
+        for (int row = 0; row < game.height; ++row) {
+            for (int col = 0; col < game.width; col++) {
+                if (game.board[row][col] == nullptr) {
+                    str += " ";
+                    continue;
+                }
+                game.board[row][col]->addToString(str);
+            }
         }
         return printGameBoard(os, str.c_str(), str.c_str() + str.size(), game.width);
     }

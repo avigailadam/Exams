@@ -21,7 +21,7 @@ namespace mtm {
 
         std::vector<GridPoint> getAttackCoordinates(const GridPoint &src_coordinate,const GridPoint &dst_coordinate) override;
 
-        void attack(Character &victim, int distance_from_attacked_point,bool reduce) override;
+        void attack(Character &victim, int distance_from_attacked_point) override;
         std::string& addToString(std::string& str) override;
     };
 }

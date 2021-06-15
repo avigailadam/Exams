@@ -23,7 +23,7 @@ namespace mtm {
         return std::vector<GridPoint>(1,dst_coordinate);
     }
 
-    void Sniper::attack(Character &victim, int distance_from_attacked_point,bool reduce) {
+    void Sniper::attack(Character &victim, int distance_from_attacked_point) {
         assert(distance_from_attacked_point == 0);
         if (victim.getTeam() == getTeam()) {
             throw IllegalTarget();
@@ -34,9 +34,9 @@ namespace mtm {
         reduceAmmo();
         int attack_by;
         int power = getPower();
+        attack_counter++;
         attack_by = attack_counter % STRONG_ATTACK ? power : power * 2;
         victim.reduceHealth(attack_by);
-        attack_counter++;
     }
     std::string &Sniper::addToString(std::string &str) {
         return getTeam() == POWERLIFTERS ? str += "N" : str += "n";
