@@ -29,8 +29,6 @@ namespace mtm {
         bool isOutOfBounds(const GridPoint &point) const;
 
     public:
-        friend std::ostream &operator<<(std::ostream &os, const Game &game) ;
-
         Game(int height, int width);
 
         ~Game() = default;
@@ -39,7 +37,7 @@ namespace mtm {
 
         Game &operator=(const Game &other) = default;
 
-    void move(const GridPoint &src, const GridPoint dst);
+        void move(const GridPoint &src_coordinates, const GridPoint &dst_coordinates);
 
         void addCharacter(const GridPoint &coordinates, std::shared_ptr<Character> character);
 
@@ -51,6 +49,8 @@ namespace mtm {
 
         static std::shared_ptr<Character>
         makeCharacter(CharacterType type, Team team, units_t health, units_t ammo, units_t range, units_t power);
+
+        friend std::ostream& operator<<(std::ostream &os, Game& game);
     };
 }
 

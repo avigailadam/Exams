@@ -7,7 +7,6 @@
 #include "Soldier.h"
 #include "Sniper.h"
 #include "Medic.h"
-#include "Auxiliaries.h"
 #include <ostream>
 
 namespace mtm {
@@ -33,7 +32,7 @@ namespace mtm {
         std::vector<GridPoint> targets = attacker->getAttackCoordinates(src_coordinates, dst_coordinates);
         bool isIllegal = true;
         int counter = 0;
-        for (int i = 0; i < targets.size(); i++) {
+        for (unsigned int i = 0; i < targets.size(); i++) {
             if (isOutOfBounds(targets[i])) {
                 continue;
             }

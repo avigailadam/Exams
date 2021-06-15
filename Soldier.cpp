@@ -7,7 +7,7 @@
 namespace mtm {
     Soldier::Soldier(Team team, int health, int currentAmmo, int range, int power) :
             Character(team, health, currentAmmo, Soldier::RELOAD_AMMO, range, power, Soldier::MOVING_RANGE,
-                      Soldier::AMMO_PER_ATTACK) {};
+                      Soldier::AMMO_PER_ATTACK) {}
 
     std::string &Soldier::addToString(std::string &str) {
         return getTeam() == POWERLIFTERS ? str += "S" : str += "s";
@@ -23,7 +23,6 @@ namespace mtm {
             throw OutOfRange();
         }
         int max_dist = ceil(double(range) / 3);
-        int index = 0;
         for (int i = dst_coordinate.row - max_dist; i <= dst_coordinate.row + max_dist; ++i) {
             for (int j = dst_coordinate.col - max_dist; j <= dst_coordinate.col + max_dist; ++j) {
                 GridPoint curr_point(i, j);
