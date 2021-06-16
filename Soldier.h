@@ -23,6 +23,8 @@ namespace mtm {
         void attack(Character &victim, int distance_from_attacked_point,bool reduce) override;
 
         std::string &addToString(std::string &str) override;
+
+        std::shared_ptr<Character> clone() const override;
     };
 }
 

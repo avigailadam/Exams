@@ -33,9 +33,9 @@ namespace mtm {
 
         ~Game() = default;
 
-        Game(const Game &other) = default;
+        Game(const Game &other);
 
-        Game &operator=(const Game &other) = default;
+        Game &operator=(const Game &other);
 
         void move(const GridPoint &src_coordinates, const GridPoint &dst_coordinates);
 

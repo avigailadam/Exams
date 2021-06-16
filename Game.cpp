@@ -147,4 +147,31 @@ namespace mtm {
         }
         return printGameBoard(os, str.c_str(), str.c_str() + str.size(), game.width);
     }
+
+    Game::Game(const Game &other) {
+        board = other.board;
+        width = other.width;
+        height = other.height;
+        for (int row = 0; row < height; ++row) {
+            for (int col = 0; col < width; col++) {
+                if (board[row][col] != nullptr) {
+                    board[row][col] = other.board[row][col]->clone();
+                }
+            }
+        }
+    }
+
+    Game &Game::operator=(const Game &other) {
+        board = other.board;
+        width = other.width;
+        height = other.height;
+        for (int row = 0; row < height; ++row) {
+            for (int col = 0; col < width; col++) {
+                if (board[row][col] != nullptr) {
+                    board[row][col] = other.board[row][col]->clone();
+                }
+            }
+        }
+        return *this;
+    }
 }

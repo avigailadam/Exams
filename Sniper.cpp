@@ -20,15 +20,15 @@ namespace mtm {
         if (distance > range || distance < ceil(double(range) / 2)) {
             throw OutOfRange();
         }
-        return std::vector<GridPoint>(1,dst_coordinate);
+        return std::vector<GridPoint>(1, dst_coordinate);
     }
 
-    void Sniper::attack(Character &victim, int distance_from_attacked_point,bool reduce) {
+    void Sniper::attack(Character &victim, int distance_from_attacked_point, bool reduce) {
         assert(distance_from_attacked_point == 0);
         if (victim.getTeam() == getTeam()) {
             throw IllegalTarget();
         }
-        if (getCurrentAmmo()<getAmmoPerAttack()){
+        if (getCurrentAmmo() < getAmmoPerAttack()) {
             throw OutOfAmmo();
         }
         reduceAmmo();
@@ -38,9 +38,16 @@ namespace mtm {
         attack_by = attack_counter % STRONG_ATTACK ? power : power * 2;
         victim.reduceHealth(attack_by);
     }
+
     std::string &Sniper::addToString(std::string &str) {
         return getTeam() == POWERLIFTERS ? str += "N" : str += "n";
     }
 
+    std::shared_ptr<Character> Sniper::clone() const {
+        std::shared_ptr<Character> c(
+                new Sniper(getTeam(), getHealth(), getCurrentAmmo(), getRange(), getPower()));
+        std::dynamic_pointer_cast<Sniper>(c)->attack_counter = attack_counter;
+        return c;
+    }
 }
 

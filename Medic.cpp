@@ -33,6 +33,10 @@ namespace mtm {
         reduceAmmo();
         victim.reduceHealth(getPower());
     }
+
+    std::shared_ptr<Character> Medic::clone() const {
+        return std::shared_ptr<Character>(new Medic(getTeam(), getHealth(), getCurrentAmmo(), getRange(), getPower()));
+    }
 }
 
 

@@ -5,9 +5,10 @@
 #ifndef GAME_CHARACTER_H
 #define GAME_CHARACTER_H
 
-#include "Exceptions.h"
 #include "Auxiliaries.h"
+#include "Exceptions.h"
 #include <cmath>
+#include <memory>
 #include <vector>
 
 
@@ -32,7 +33,7 @@ namespace mtm {
                                                         ammo_per_attack(ammoPerAttack) {}
 
     public:
-
+        virtual std::shared_ptr<Character> clone() const = 0;
         virtual std::vector<GridPoint>
         getAttackCoordinates(const GridPoint &src_coordinate, const GridPoint &dst_coordinate) = 0;
 

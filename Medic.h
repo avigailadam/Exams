@@ -21,7 +21,7 @@ namespace mtm {
 
         std::string &addToString(std::string &str) override;
 
-
+        std::shared_ptr<Character> clone() const override;
     };
 }
 
