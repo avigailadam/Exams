@@ -1,18 +1,17 @@
 #ifndef EXAMS_SORTEDLIST_H
 #define EXAMS_SORTEDLIST_H
 
-#include <iostream>
 #include <cassert>
+#include <iostream>
+#include <stdexcept>
 
 namespace mtm {
     template<class T>
     class SortedList {
         class Node;
 
-        Node *head;
         int size;
-
-
+        Node *head;
     public:
 
         class const_iterator;

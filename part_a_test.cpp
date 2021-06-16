@@ -12,12 +12,11 @@ using namespace mtm;
 
 #define TEST(num) cout << endl << "TEST " << (num) << endl;
 
-string getLen(string str)
-{
+string getLen(string str) {
     return std::to_string(str.length());
 }
 
-bool isTrollLink(const ExamDetails& exam) {
+bool isTrollLink(const ExamDetails &exam) {
     return (exam.getLink().find("tinyurl") != string::npos);
 }
 
@@ -29,16 +28,23 @@ void printList(SortedList<T> list) {
     cout << endl;
 }
 
-int main()
-{
+int main() {
+    SortedList<int> list123;
+    list123.insert(2);
+    list123.insert(1);
+    list123.insert(30);
+    list123.insert(1);
+    list123.insert(99);
+    printList(list123);
+
     TEST("1.1")
     ExamDetails exam1 = ExamDetails::makeMatamExam();
     ExamDetails exam2(104032, 7, 11, 9.5, 3);
-    ExamDetails exam3 = exam1; 
-    cout << "the difference between MATAM and infi 2m is " << (exam1-exam2) << " days";
+    ExamDetails exam3 = exam1;
+    cout << "the difference between MATAM and infi 2m is " << (exam1 - exam2) << " days";
 
     TEST("1.2")
-    ExamDetails& closest = (exam1 < exam2) ? exam1 : exam2;
+    ExamDetails &closest = (exam1 < exam2) ? exam1 : exam2;
     cout << "your closest exam is:" << endl << closest << endl;
 
     TEST("1.3")
@@ -50,7 +56,7 @@ int main()
         ExamDetails exam4(236506, 42, 0, 13, 3, "https://tinyurl.com/ym8wf46t");
         cout << exam4 << endl;
     }
-    catch (ExamDetails::InvalidDateException& e) {
+    catch (ExamDetails::InvalidDateException &e) {
         cout << "invalid date" << endl;
     }
 

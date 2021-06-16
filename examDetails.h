@@ -5,52 +5,48 @@
 #include <string>
 #include <ostream>
 
-class ExamDetails {
-    int course_id;
-    int month_of_exam;
-    int day_of_exam;
-    double start_time;
-    int duration;
-    std::string zoom_link;
+namespace mtm {
+    class ExamDetails {
+        int course_id;
+        int month_of_exam;
+        int day_of_exam;
+        double start_time;
+        int duration;
+        std::string zoom_link;
 
-public:
-    ExamDetails(int course_num, int month_of_exam, int day_of_exam, double start_time, int duration, std::string
-    zoom_link = "");
+    public:
+        ExamDetails(int course_num, int month_of_exam, int day_of_exam, double start_time, int duration, std::string
+        zoom_link = "");
 
-    ExamDetails(const ExamDetails &exam) = default;
+        ExamDetails(const ExamDetails &exam) = default;
 
-    ~ExamDetails() = default;
+        ~ExamDetails() = default;
 
-    const std::string &getLink() const;
-
-
-    void setLink(const std::string &zoomLink);
+        const std::string &getLink() const;
 
 
-    int operator-(const ExamDetails &other) const;
-
-    bool operator<(const ExamDetails &exam) const;
-
-    ExamDetails &operator=(const ExamDetails &exam_2);
-
-    friend std::ostream &operator<<(std::ostream &os, const ExamDetails &details);
-
-    friend int hours(ExamDetails &exam);
-
-    friend int minutes(ExamDetails &exam);
+        void setLink(const std::string &zoomLink);
 
 
-    static ExamDetails makeMatamExam();
+        int operator-(const ExamDetails &other) const;
 
-    class InvalidDateException {
+        bool operator<(const ExamDetails &exam) const;
+
+        ExamDetails &operator=(const ExamDetails &exam_2);
+
+        friend std::ostream &operator<<(std::ostream &os, const ExamDetails &details);
+
+        static ExamDetails makeMatamExam();
+
+        class InvalidDateException {
+        };
+
+        class InvalidTimeException {
+        };
+
+        class InvalidArgsException {
+        };
     };
-
-    class InvalidTimeException {
-    };
-
-    class InvalidArgsException {
-    };
-};
-
+}
 
 #endif //HW2_EXAMDETAILS_H
