@@ -8,6 +8,7 @@
 namespace mtm {
     template<class T>
     class SortedList {
+    private:
         class Node;
 
         int size;
@@ -33,17 +34,17 @@ namespace mtm {
         }
 
         template<class Condition>
-        SortedList<T> filter(Condition c);
+        SortedList<T> filter(Condition c) const;
 
         template<class Function>
-        SortedList<T> apply(Function f);
+        SortedList<T> apply(Function f) const;
 
-        const_iterator begin() {
+        const_iterator begin() const {
             const_iterator first(head);
             return first;
         }
 
-        const_iterator end() {
+        const_iterator end() const {
             const_iterator result(nullptr);
             return result;
         }
@@ -109,9 +110,7 @@ namespace mtm {
             Node() = default;
 
         public:
-            explicit Node(T element, Node *node_next = nullptr) : data(element) {
-                next = node_next;
-            };
+            explicit Node(T element, Node *node_next = nullptr) : data(element), next(node_next) {};
 
             Node(Node &other) = default;
 
@@ -230,7 +229,7 @@ namespace mtm {
 
     template<class T>
     template<class Condition>
-    SortedList<T> SortedList<T>::filter(Condition c) {
+    SortedList<T> SortedList<T>::filter(Condition c) const {
         SortedList filtered_list;
         for (const_iterator i = begin(); i != end(); ++i) {
             if (!c(i.current_node->data)) {
@@ -243,7 +242,7 @@ namespace mtm {
 
     template<class T>
     template<class Function>
-    SortedList<T> SortedList<T>::apply(Function f) {
+    SortedList<T> SortedList<T>::apply(Function f) const {
         SortedList<T> transformed_list;
         for (const_iterator i = begin(); i != end(); ++i) {
             transformed_list.insert(f(i.current_node->data));
