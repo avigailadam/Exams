@@ -15,7 +15,6 @@ namespace mtm {
         int size;
         Node *head;
     public:
-
         class const_iterator;
 
         SortedList() : size(0), head(nullptr) {}
@@ -97,6 +96,9 @@ namespace mtm {
             }
 
             T operator*() const {
+                if (current_node == nullptr) {
+                    throw std::out_of_range("Can't * on end()");
+                }
                 return current_node->data;
             }
         };
@@ -142,15 +144,15 @@ namespace mtm {
             size--;
             return;
         }
-        Node *current = this->head;
-        for (SortedList::const_iterator i = ++begin(); i != end(); ++i) {
-            if (i != iterator) {
+        Node *previous = this->head;
+        for (SortedList::const_iterator current = ++begin(); current != end(); ++current) {
+            if (current != iterator) {
+                previous = current.current_node;
                 continue;
             }
-            Node *before = current;
-            current = current->next;
-            before->next = current->next;
-            delete current;
+            assert(previous != nullptr);
+            previous->next = current.current_node->next;
+            delete current.current_node;
             size--;
             return;
         }
@@ -187,7 +189,11 @@ namespace mtm {
         }
 
         delete end().current_node;
+        head = nullptr;
         size = other.size;
+        if (other.head == nullptr) {
+            return *this;
+        }
         head = new Node(*other.head);
         Node *current = head;
         Node *current_other = other.head;
@@ -252,6 +258,14 @@ namespace mtm {
         return transformed_list;
     }
 
+    template<class T>
+    std::ostream &operator<<(std::ostream &os, const SortedList<T> &list) {
+        for (typename SortedList<T>::const_iterator i = list.begin(); i != list.end(); ++i) {
+            os << *i << ", ";
+        }
+        os << std::endl;
+        return os;
+    }
 }
 #endif //EXAMS_SORTEDLIST_H
 
