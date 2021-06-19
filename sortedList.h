@@ -9,6 +9,7 @@ namespace mtm {
     template<class T>
     class SortedList {
     private:
+
         class Node;
 
         int size;
@@ -101,6 +102,7 @@ namespace mtm {
         };
 
     private:
+
         class Node {
             T data;
             struct Node *next;
